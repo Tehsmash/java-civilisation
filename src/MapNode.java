@@ -6,27 +6,39 @@ import java.util.ArrayList;
  * Date: 22/05/12
  * Time: 21:46
  */
-public class MapNode {
-    private ArrayList<MapNode> neighbours;
+public class MapNode{
+    private int nodeNum;
     private boolean ocean;
     private boolean coast;
     private int support;
     private boolean floodplain;
     private boolean cityPoint;
     private int cityBuilt = -1;
+    private ArrayList<NodeLink> neighbours;
 
-    public MapNode(ArrayList<MapNode> neighbours, boolean ocean, boolean coast, int support, boolean floodplain, boolean cityPoint)
+    /**
+     * An object representing a single map tile.
+     * @param nodeNum Number representing this node.
+     * @param ocean Is this an ocean tile?
+     * @param coast Is this a coastal tile?
+     * @param support Max tokens this tile supports.
+     * @param floodplain Does this tile contain a floodplain?
+     * @param cityPoint Is it cheaper to build cities on this tile?
+     */
+    public MapNode(int nodeNum, boolean ocean, boolean coast, int support, boolean floodplain, boolean cityPoint)
     {
-        this.neighbours = neighbours;
+        this.nodeNum = nodeNum;
         this.ocean = ocean;
         this.coast = coast;
         this.support = support;
         this.floodplain = floodplain;
         this.cityPoint = cityPoint;
+        neighbours = new ArrayList<NodeLink>();
     }
 
-    public ArrayList<MapNode> getNeighbours() {
-        return neighbours;
+    public void addNeighbour(int linkType, MapNode neighbour)
+    {
+        neighbours.add(new NodeLink(linkType, neighbour));
     }
 
     public boolean isOcean() {
@@ -55,5 +67,10 @@ public class MapNode {
 
     public void setCityBuilt(int cityBuilt) {
         this.cityBuilt = cityBuilt;
+    }
+
+    public void destroyCity()
+    {
+        cityBuilt = -1;
     }
 }
